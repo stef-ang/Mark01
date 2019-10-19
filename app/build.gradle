@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+Properties properties = new Properties()
+rootProject.project.file('env.properties').withInputStream { properties.load(it) }
+
+android {
+    compileSdkVersion build_versions.compile_version
+    defaultConfig {
+        applicationId "com.stef_ang.mark01"
+        minSdkVersion build_versions.min_version
+        targetSdkVersion build_versions.target_version
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField("String", "TMDB_API3_KEY", properties.getProperty("tmdb_api3_key", ""))
+            buildConfigField("String", "TMDB_API4_KEY", properties.getProperty("tmdb_api4_key", ""))
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.core:core-ktx:$versions.appcompat"
+    implementation "com.android.support.constraint:constraint-layout:$versions.constraintlayout"
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    implementation "com.google.dagger:dagger-android:$versions.dagger"
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+
+    // rx
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.test_junit"
+    androidTestImplementation "androidx.test:runner:$versions.test_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+
+    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide"
+}
