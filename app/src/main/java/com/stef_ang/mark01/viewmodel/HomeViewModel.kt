@@ -19,12 +19,18 @@ class HomeViewModel : ViewModel() {
     private val _rawData = MutableLiveData<String>()
     val rawData: LiveData<String> get() =  _rawData
 
+    private val _movieNames = MutableLiveData<List<String>>()
+    val movieNames: LiveData<List<String>> get() =  _movieNames
+
     fun fetchNowPlayingMovies() {
         coroutineScope.launch {
             val deferred = Api.retrofitService.getNowPlayingAsync(1)
             try {
                 val listResult = deferred.await()
-                _rawData.value = listResult.results.size.toString()
+                listResult.results?.let { list ->
+                    _rawData.value = "size: ${list.size}"
+                    _movieNames.value = list.map { it.originalTitle ?: "" }
+                }
             } catch (e: Exception) {
                 Log.d("HomeViewModel", e.message)
                 _rawData.value = "Failure ${e.message}"

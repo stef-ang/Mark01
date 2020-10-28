@@ -2,34 +2,7 @@ package com.stef_ang.mark01.api.data
 
 import com.squareup.moshi.Json
 
-data class MovieNowPlaying(
-
-	@Json(name="dates")
-	val dates: Dates? = null,
-
-	@Json(name="page")
-	val page: Int? = null,
-
-	@Json(name="total_pages")
-	val totalPages: Int? = null,
-
-	@Json(name="results")
-	val results: List<ResultsItem?>? = null,
-
-	@Json(name="total_results")
-	val totalResults: Int? = null
-)
-
-data class Dates(
-
-	@Json(name="maximum")
-	val maximum: String? = null,
-
-	@Json(name="minimum")
-	val minimum: String? = null
-)
-
-data class ResultsItem(
+data class Movie(
 
 	@Json(name="overview")
 	val overview: String? = null,
