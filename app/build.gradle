@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin:'androidx.navigation.safeargs'
 
 Properties properties = new Properties()
 rootProject.project.file('env.properties').withInputStream { properties.load(it) }
@@ -27,32 +28,65 @@ android {
             buildConfigField("String", "TMDB_API4_KEY", properties.getProperty("tmdb_api4_key", ""))
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
-    implementation "androidx.core:core-ktx:$versions.appcompat"
-    implementation "com.android.support.constraint:constraint-layout:$versions.constraintlayout"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+    implementation "androidx.core:core-ktx:$versions.core_ktx"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+    implementation "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
+    implementation "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+
+    // dagger
     implementation "com.google.dagger:dagger:$versions.dagger"
     implementation "com.google.dagger:dagger-android:$versions.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+//    implementation "com.squareup.retrofit2:converter-scalars:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$versions.moshi"
     implementation "com.github.bumptech.glide:glide:$versions.glide"
 
     // rx
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
     implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlin_coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutine"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.retrofit_coroutines_adapter"
+
+    // fast adapter
+    implementation "com.mikepenz:fastadapter:$versions.fastadapter"
+
+    // flipper
+    debugImplementation 'com.facebook.flipper:flipper:0.63.0'
+    debugImplementation 'com.facebook.soloader:soloader:0.9.0'
+    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.63.0'
 
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
     testImplementation "junit:junit:$versions.junit"
 
     androidTestImplementation "androidx.test.ext:junit:$versions.test_junit"
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
-    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
-    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
-
-    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide"
 }
