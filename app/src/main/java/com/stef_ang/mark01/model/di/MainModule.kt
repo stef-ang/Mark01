@@ -8,8 +8,8 @@ import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import retrofit2.Retrofit
 
-@Module
-abstract class MainModule {
+//@Module
+//abstract class MainModule {
 
 //    @FragmentScoped
 //    @ContributesAndroidInjector
@@ -35,4 +35,4 @@ abstract class MainModule {
 //            return retrofit.create<MovieRemoteDataSource.MovieApi>(MovieRemoteDataSource.MovieApi::class.java!!)
 //        }
 //    }
-}
+//}
