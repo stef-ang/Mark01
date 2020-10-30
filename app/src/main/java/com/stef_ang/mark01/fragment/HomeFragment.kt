@@ -21,7 +21,12 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = requireNotNull(_binding)
-    private val viewModel: HomeViewModel by lazy { ViewModelProvider(this).get(HomeViewModel::class.java) }
+    private val viewModel: HomeViewModel by lazy {
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onViewCreated()"
+        }
+        ViewModelProvider(this, HomeViewModel.Factory(activity.application)).get(HomeViewModel::class.java)
+    }
 
     private val itemAdapter = ItemAdapter<GenericItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
@@ -30,7 +35,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initRecyclerView()
-        initRequest()
         observeLiveData()
 
         return _binding?.root
@@ -44,13 +48,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initRequest() {
-        viewModel.fetchNowPlayingMovies()
-    }
-
     private fun observeLiveData() {
-        viewModel.movies.observe(viewLifecycleOwner, Observer { list ->
-            itemAdapter.setNewList(list.map { HomeMovieVI(it) })
+        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { list ->
+            if (list.isEmpty()) {
+                binding.imageStatus.apply {
+                    visibility = View.VISIBLE
+                    setImageResource(R.drawable.loading_animation)
+                }
+            } else {
+                itemAdapter.setNewList(list.map { HomeMovieVI(it) })
+                binding.imageStatus.visibility = View.GONE
+            }
         })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
@@ -62,7 +70,7 @@ class HomeFragment : Fragment() {
 
         viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            // nah kyk gini Fragment jd punya dependency ke Api, better gmn ya?
+            // todo ask: kyk gini Fragment jd punya dependency ke Api, better gmn ya?
             binding.imageStatus.apply {
                 when (it) {
                     Api.Status.ERROR -> {

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin:'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs'
 
 Properties properties = new Properties()
 rootProject.project.file('env.properties').withInputStream { properties.load(it) }
@@ -44,14 +44,18 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
+    // android x
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
-//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
     implementation "androidx.core:core-ktx:$versions.core_ktx"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+//    implementation "androidx.room:room-runtime:$versions.room"
+    implementation "androidx.room:room-ktx:$versions.room"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+
     implementation "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
-    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
 
     // dagger
     implementation "com.google.dagger:dagger:$versions.dagger"
@@ -87,6 +91,7 @@ dependencies {
 
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
     kapt "com.github.bumptech.glide:compiler:$versions.glide"
+    kapt "androidx.room:room-compiler:$versions.room"
 
     testImplementation "junit:junit:$versions.junit"
 

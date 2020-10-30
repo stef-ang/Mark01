@@ -1,8 +1,8 @@
-package com.stef_ang.mark01.api.data
+package com.stef_ang.mark01.api.datatransfer
 
 import com.squareup.moshi.Json
 
-data class Movie(
+data class MovieDT(
 
 	@Json(name="overview")
 	val overview: String? = null,
@@ -38,7 +38,7 @@ data class Movie(
 	val voteAverage: Double? = null,
 
 	@Json(name="id")
-	val id: Int? = null,
+	val id: Int,
 
 	@Json(name="adult")
 	val adult: Boolean? = null,

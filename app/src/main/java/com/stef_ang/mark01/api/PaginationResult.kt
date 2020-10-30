@@ -1,4 +1,4 @@
-package com.stef_ang.mark01.api.data
+package com.stef_ang.mark01.api
 
 import com.squareup.moshi.Json
 

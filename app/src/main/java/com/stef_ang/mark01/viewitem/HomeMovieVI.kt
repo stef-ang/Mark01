@@ -6,9 +6,9 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.ItemMovieBinding
 import com.stef_ang.mark01.util.ImageUtils
-import com.stef_ang.mark01.viewmodel.HomeMovieData
+import com.stef_ang.mark01.domain.HomeMovie
 
-class HomeMovieVI(val data: HomeMovieData): AbstractBindingItem<ItemMovieBinding>() {
+class HomeMovieVI(val data: HomeMovie): AbstractBindingItem<ItemMovieBinding>() {
 
     override val type: Int
         get() = R.id.item_home_movie
