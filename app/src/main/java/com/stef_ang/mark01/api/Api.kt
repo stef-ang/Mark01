@@ -33,4 +33,6 @@ object Api {
     val retrofitService : MovieService by lazy{
         retrofit.create(MovieService::class.java)
     }
+
+    enum class Status { LOADING, ERROR, DONE }
 }

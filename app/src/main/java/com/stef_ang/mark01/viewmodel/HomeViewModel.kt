@@ -16,19 +16,23 @@ class HomeViewModel : ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private val _rawData = MutableLiveData<String>()
-    val rawData: LiveData<String> get() =  _rawData
+    private val _apiStatus = MutableLiveData<Api.Status>()
+    val apiStatus: LiveData<Api.Status> get() =  _apiStatus
 
     private val _movies = MutableLiveData<List<HomeMovieData>>()
     val movies: LiveData<List<HomeMovieData>> get() =  _movies
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> get() =  _errorMessage
 
     fun fetchNowPlayingMovies() {
         coroutineScope.launch {
             val deferred = Api.retrofitService.getNowPlayingAsync(1)
             try {
+                _apiStatus.value = Api.Status.LOADING
                 val listResult = deferred.await()
+                _apiStatus.value = Api.Status.DONE
                 listResult.results?.let { list ->
-                    _rawData.value = "size: ${list.size}"
                     _movies.value = list.map {
                         HomeMovieData(
                             it.originalTitle,
@@ -40,10 +44,15 @@ class HomeViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
+                _apiStatus.value = Api.Status.ERROR
                 Log.d("HomeViewModel", e.message)
-                _rawData.value = "Failure ${e.message}"
+                _errorMessage.value = e.message
             }
         }
+    }
+
+    fun onMessageHasShown() {
+        _errorMessage.value = null
     }
 
     override fun onCleared(){
