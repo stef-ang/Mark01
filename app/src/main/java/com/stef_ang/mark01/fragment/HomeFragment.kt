@@ -10,9 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.select.getSelectExtension
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
-import com.stef_ang.mark01.viewitem.TextViewItem
+import com.stef_ang.mark01.viewitem.HomeMovieVI
 import com.stef_ang.mark01.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -38,7 +37,9 @@ class HomeFragment : Fragment() {
     private fun initRecyclerView() {
 //        val selectExtension = fastAdapter.getSelectExtension()
 //        selectExtension.isSelectable = true
-        binding.recyclerView.adapter = fastAdapter
+        binding.recyclerView.apply {
+            adapter = fastAdapter
+        }
     }
 
     private fun initRequest() {
@@ -49,8 +50,8 @@ class HomeFragment : Fragment() {
         viewModel.rawData.observe(viewLifecycleOwner, Observer {
             binding.text.text = it
         })
-        viewModel.movieNames.observe(viewLifecycleOwner, Observer { list ->
-            itemAdapter.setNewList(list.map { TextViewItem(it) })
+        viewModel.movies.observe(viewLifecycleOwner, Observer { list ->
+            itemAdapter.setNewList(list.map { HomeMovieVI(it) })
         })
     }
 

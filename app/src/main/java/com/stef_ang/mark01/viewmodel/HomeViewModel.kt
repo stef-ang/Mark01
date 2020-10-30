@@ -19,8 +19,8 @@ class HomeViewModel : ViewModel() {
     private val _rawData = MutableLiveData<String>()
     val rawData: LiveData<String> get() =  _rawData
 
-    private val _movieNames = MutableLiveData<List<String>>()
-    val movieNames: LiveData<List<String>> get() =  _movieNames
+    private val _movies = MutableLiveData<List<HomeMovieData>>()
+    val movies: LiveData<List<HomeMovieData>> get() =  _movies
 
     fun fetchNowPlayingMovies() {
         coroutineScope.launch {
@@ -29,7 +29,15 @@ class HomeViewModel : ViewModel() {
                 val listResult = deferred.await()
                 listResult.results?.let { list ->
                     _rawData.value = "size: ${list.size}"
-                    _movieNames.value = list.map { it.originalTitle ?: "" }
+                    _movies.value = list.map {
+                        HomeMovieData(
+                            it.originalTitle,
+                            it.overview,
+                            Api.BASE_POSTER_URL + it.posterPath,
+                            it.releaseDate,
+                            it.voteAverage
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 Log.d("HomeViewModel", e.message)

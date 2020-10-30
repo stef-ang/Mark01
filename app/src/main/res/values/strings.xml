@@ -2,4 +2,8 @@
     <string name="app_name">Mark01</string>
 
     <string name="hello_blank_fragment">Home blank fragment</string>
+
+    <string name="image_movie">Movie Poster</string>
+
+    <string name="text_movie_rating">Rating: %s / 10</string>
 </resources>
