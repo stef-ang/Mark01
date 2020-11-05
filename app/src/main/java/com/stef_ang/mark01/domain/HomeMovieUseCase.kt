@@ -1,25 +1,25 @@
 package com.stef_ang.mark01.domain
 
 import com.stef_ang.mark01.database.asDomainModel
-import com.stef_ang.mark01.model.MovieRepository
-import com.stef_ang.mark01.viewmodel.HomeViewState
+import com.stef_ang.mark01.repository.MovieRepository
+import com.stef_ang.mark01.repository.ResponseStatus
 import javax.inject.Inject
 
 class HomeMovieUseCase @Inject constructor(val movieRepository: MovieRepository) {
 
-    suspend fun getMovies(callback: (HomeViewState) -> Unit) {
+    suspend fun getMovies(callback: (HomeMovieDomain) -> Unit) {
         val movies = movieRepository.getMovies().asDomainModel()
         if (movies.isNotEmpty()) {
-            callback(HomeViewState.Success(movies))
+            callback(HomeMovieDomain.Success(movies))
         } else {
-            callback(HomeViewState.Loading)
+            callback(HomeMovieDomain.Loading)
         }
 
         val result = movieRepository.refreshMovieNowPlaying()
-        if (result.first) {
-            callback(HomeViewState.Success(movieRepository.getMovies().asDomainModel()))
+        if (result is ResponseStatus.Success) {
+            callback(HomeMovieDomain.Success(movieRepository.getMovies().asDomainModel()))
         } else {
-            callback(HomeViewState.Error(result.second))
+            callback(HomeMovieDomain.Error((result as ResponseStatus.Error).error))
         }
     }
 }

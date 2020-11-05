@@ -35,17 +35,11 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // alternative: inject application with @Component.Factory
+        // inject application with @Component.Factory
         DaggerHomeComponent.factory().create(requireActivity().application).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // inject application with @Component.Builder
-//        DaggerHomeComponent.builder()
-//            .application(activity!!.application)
-//            .build()
-//            .inject(this)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initRecyclerView()
@@ -55,8 +49,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-//        val selectExtension = fastAdapter.getSelectExtension()
-//        selectExtension.isSelectable = true
         binding.recyclerView.apply {
             adapter = fastAdapter
         }
@@ -64,80 +56,32 @@ class HomeFragment : Fragment() {
 
     private fun observeLiveData() {
         viewModel.state.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is HomeViewState.Loading -> {
-//                    if (it.movies.isNullOrEmpty()) {
-                        binding.imageStatus.apply {
-                            visibility = View.VISIBLE
-                            setImageResource(R.drawable.loading_animation)
-                        }
-//                    } else {
-//                        itemAdapter.setNewList(it.movies.map { movie -> HomeMovieVI(movie).also {
-//                            it.identifier = movie.id.toLong()
-//                        } })
-//                    }
+            when (it.state) {
+                is HomeViewState.State.Loading -> {
+                    binding.imageStatus.apply {
+                        visibility = View.VISIBLE
+                        setImageResource(R.drawable.loading_animation)
+                    }
                 }
-                is HomeViewState.Success -> {
+                is HomeViewState.State.Success -> {
                     itemAdapter.setNewList(it.movies?.map { movie -> HomeMovieVI(movie).also {
                         it.identifier = movie.id.toLong()
                     } } ?: emptyList())
                     binding.imageStatus.visibility = View.GONE
                 }
-                is HomeViewState.Error -> {
-//                    itemAdapter.setNewList(it.movies?.map { movie -> HomeMovieVI(movie).also {
-//                        it.identifier = movie.id.toLong()
-//                    } } ?: emptyList())
+                is HomeViewState.State.Error -> {
+                    itemAdapter.setNewList(it.movies?.map { movie -> HomeMovieVI(movie).also {
+                        it.identifier = movie.id.toLong()
+                    } } ?: emptyList())
                     binding.imageStatus.visibility = View.GONE
-                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, (it.state as HomeViewState.State.Error).error, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-//        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { list ->
-//            if (list.isEmpty()) {
-//                binding.imageStatus.apply {
-//                    visibility = View.VISIBLE
-//                    setImageResource(R.drawable.loading_animation)
-//                }
-//            } else {
-//                itemAdapter.setNewList(list.map { HomeMovieVI(it) })
-//                binding.imageStatus.visibility = View.GONE
-//            }
-//        })
-
-//        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
-//            message?.let {
-//                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-//                viewModel.onMessageHasShown()
-//            }
-//        })
-//
-//        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            // todo ask: kyk gini Fragment jd punya dependency ke Api, better gmn ya?
-//            binding.imageStatus.apply {
-//                when (it) {
-//                    Api.Status.ERROR -> {
-//                        visibility = View.VISIBLE
-//                        setImageResource(R.drawable.ic_connection_error)
-//                    }
-//                    Api.Status.LOADING -> {
-//                        visibility = View.VISIBLE
-//                        setImageResource(R.drawable.loading_animation)
-//                    }
-//                    Api.Status.DONE -> {
-//                        visibility = View.GONE
-//                    }
-//                }
-//            }
-//        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-
     }
 }

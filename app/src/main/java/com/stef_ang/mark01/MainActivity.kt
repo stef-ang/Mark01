@@ -2,14 +2,16 @@ package com.stef_ang.mark01
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 
 class MainActivity : AppCompatActivity() {
 
-    private val navController by lazy { findNavController(R.id.main_frame_fragment) }
+    private val navHostFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.main_frame_fragment) as NavHostFragment
+    }
+    private val navController get() = navHostFragment.navController
 
-    //    @Singleton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

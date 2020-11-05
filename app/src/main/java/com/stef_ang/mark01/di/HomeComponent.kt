@@ -7,16 +7,8 @@ import dagger.Component
 
 @Component(modules = [HomeModule::class, HomeViewModelModule::class])
 interface HomeComponent {
-    fun inject(fragment: HomeFragment)
 
-//    @Component.Builder
-//    interface Builder {
-//
-//        @BindsInstance
-//        fun application(application: Application): Builder
-//
-//        fun build(): HomeComponent
-//    }
+    fun inject(fragment: HomeFragment)
 
     @Component.Factory
     interface Factory {
