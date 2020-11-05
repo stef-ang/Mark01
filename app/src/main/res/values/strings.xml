@@ -6,4 +6,6 @@
     <string name="image_movie">Movie Poster</string>
 
     <string name="text_movie_rating">Rating: %s / 10</string>
+
+    <string name="action_set_favorite">Favorite</string>
 </resources>

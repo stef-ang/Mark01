@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.stef_ang.mark01.fragment.HomeFragment"
-        android:label="Movie StefAng"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
 </navigation>

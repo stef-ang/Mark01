@@ -8,7 +8,6 @@ import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.soloader.SoLoader
 import com.stef_ang.mark01.api.Api
 
-
 class Mark01Application: Application() {
 
     override fun onCreate() {

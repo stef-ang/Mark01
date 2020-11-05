@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class HomeMovie(
+    val id: Int,
     val title: String?,
     val overview: String?,
     val image: String?,
