@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.stef_ang.mark01.Mark01Application
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
-import com.stef_ang.mark01.di.DaggerHomeComponent
 import com.stef_ang.mark01.viewitem.HomeMovieVI
 import com.stef_ang.mark01.viewmodel.HomeViewModel
 import com.stef_ang.mark01.viewmodel.HomeViewState
@@ -35,8 +35,11 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // inject application with @Component.Factory
-        DaggerHomeComponent.factory().create(requireActivity().application).inject(this)
+        (requireActivity().application as Mark01Application)
+            .appComponent
+            .homeComponent()
+            .create()
+            .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

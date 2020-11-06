@@ -60,8 +60,8 @@ dependencies {
 
     // dagger
     implementation "com.google.dagger:dagger:$versions.dagger"
-    implementation "com.google.dagger:dagger-android:$versions.dagger"
-    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+//    implementation "com.google.dagger:dagger-android:$versions.dagger"
+//    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
 
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
 //    implementation "com.squareup.retrofit2:converter-scalars:$versions.retrofit"
@@ -93,4 +93,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$versions.test_junit"
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
+
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$versions.dagger"
 }
