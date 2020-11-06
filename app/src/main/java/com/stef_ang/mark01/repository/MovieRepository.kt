@@ -1,9 +1,9 @@
 package com.stef_ang.mark01.repository
 
 import com.stef_ang.mark01.api.MovieService
-import com.stef_ang.mark01.api.asDatabaseModel
+import com.stef_ang.mark01.api.asCacheData
 import com.stef_ang.mark01.database.CacheDB
-import com.stef_ang.mark01.database.entity.MovieDO
+import com.stef_ang.mark01.database.CacheData
 
 // repository responsible to wrap data service (DB and remote)
 // no LiveData or other android stuff
@@ -12,8 +12,8 @@ class MovieRepository(
     private val remoteService: MovieService
 ) {
 
-    fun getMovies(): List<MovieDO> {
-        return cacheDB.cacheDao.getMovies2()
+    fun getMovies(): List<CacheData> {
+        return cacheDB.cacheDao.getMovies()
     }
 
     suspend fun refreshMovieNowPlaying(): ResponseStatus {
@@ -21,7 +21,7 @@ class MovieRepository(
             val result = remoteService.getNowPlayingAsync(1)
             if (result.isSuccessful) {
                 val nowPlaying = result.body()?.results ?: emptyList()
-                cacheDB.cacheDao.insertAllMovie(*nowPlaying.asDatabaseModel())
+                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData())
             }
             ResponseStatus.Success
         } catch (e: Exception) {

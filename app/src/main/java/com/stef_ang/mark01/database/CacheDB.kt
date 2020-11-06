@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.stef_ang.mark01.database.entity.MovieDO
-import com.stef_ang.mark01.database.entity.MovieDetailDO
 
-@Database(entities = [MovieDO::class, MovieDetailDO::class], version = 1)
+@Database(entities = [CacheData::class], version = 1)
 abstract class CacheDB : RoomDatabase() {
     abstract val cacheDao: CacheDao
 

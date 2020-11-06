@@ -1,57 +1,15 @@
 package com.stef_ang.mark01.api
 
 import com.stef_ang.mark01.api.datatransfer.MovieDT
-import com.stef_ang.mark01.api.datatransfer.MovieDetailDT
-import com.stef_ang.mark01.database.entity.MovieDO
-import com.stef_ang.mark01.database.entity.MovieDetailDO
-import java.lang.StringBuilder
+import com.stef_ang.mark01.database.CacheData
+import com.stef_ang.mark01.util.Helper
 
-fun List<MovieDT>.asDatabaseModel(): Array<MovieDO> {
+fun List<MovieDT>.asCacheData(): Array<CacheData> {
     return map {
-        MovieDO(
+        CacheData(
             it.id,
-            it.adult,
-            it.backdropPath,
-            it.originalLanguage,
-            it.originalTitle,
-            it.overview,
-            it.popularity,
-            it.posterPath,
-            it.releaseDate,
-            it.title,
-            it.video,
-            it.voteAverage,
-            it.voteCount
+            CacheData.TYPE_MOVIE,
+            Helper.adapterMovieDT.toJson(it)
         )
     }.toTypedArray()
-}
-
-fun MovieDetailDT.asDatabaseModel(): MovieDetailDO {
-    val genreBuilder = StringBuilder(10_000)
-    for (genre in genres) {
-        genreBuilder.append(genre.name)
-    }
-    return MovieDetailDO(
-        id,
-        adult,
-        backdropPath,
-        budget,
-        genreBuilder.toString(),
-        homepage,
-        imdbId,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        posterPath,
-        releaseDate,
-        revenue,
-        runtime,
-        status,
-        tagline,
-        title,
-        video,
-        voteAverage,
-        voteCount
-    )
 }
