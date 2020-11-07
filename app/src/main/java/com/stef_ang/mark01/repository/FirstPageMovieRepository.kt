@@ -20,8 +20,8 @@ class FirstPageMovieRepository @Inject constructor(
         return try {
             val result = remoteService.getMoviesAsync(type.pathType, 1)
             if (result.isSuccessful) {
-                val nowPlaying = result.body()?.results ?: emptyList()
-                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData(type.cacheType))
+                val movies = result.body()?.results ?: emptyList()
+                cacheDB.cacheDao.insertAllCache(*movies.asCacheData(type.cacheType))
             }
             ResponseStatus.Success
         } catch (e: Exception) {

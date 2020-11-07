@@ -3,6 +3,8 @@ package com.stef_ang.mark01.api.datatransfer
 import com.squareup.moshi.Json
 
 data class MovieDT(
+	@Json(name="title")
+	val title: String? = null,
 
 	@Json(name="overview")
 	val overview: String? = null,
@@ -15,9 +17,6 @@ data class MovieDT(
 
 	@Json(name="video")
 	val video: Boolean? = null,
-
-	@Json(name="title")
-	val title: String? = null,
 
 	@Json(name="genre_ids")
 	val genreIds: List<Int?>? = null,

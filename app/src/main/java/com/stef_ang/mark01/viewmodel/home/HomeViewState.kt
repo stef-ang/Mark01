@@ -4,8 +4,8 @@ import com.stef_ang.mark01.domain.HomeMovie
 
 // HomeFragment - HomeViewModel (Actions) - HomeViewState
 data class HomeViewState(
-    var movies: List<HomeMovie>?,
-    var state: State
+    val movies: List<HomeMovie>?,
+    val state: State
 ) {
 
     sealed class State {

@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface CacheDao {
 
-    @Query("SELECT * FROM cache_data WHERE type = :type")
+    @Query("SELECT * FROM cache_data WHERE type = :type ORDER BY custom_order")
     fun getHomeSectionMovies(@CacheData.Companion.DataType type: String): List<CacheData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

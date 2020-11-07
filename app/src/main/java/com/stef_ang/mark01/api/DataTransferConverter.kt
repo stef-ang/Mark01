@@ -5,11 +5,13 @@ import com.stef_ang.mark01.database.CacheData
 import com.stef_ang.mark01.util.Helper
 
 fun List<MovieDT>.asCacheData(@CacheData.Companion.DataType type: String): Array<CacheData> {
-    return map {
+    return mapIndexed { index, movie ->
         CacheData(
-            it.id,
+            movie.id,
+            "${type}_${movie.id}",
             type,
-            Helper.adapterMovieDT.toJson(it)
+            index,
+            Helper.adapterMovieDT.toJson(movie)
         )
     }.toTypedArray()
 }

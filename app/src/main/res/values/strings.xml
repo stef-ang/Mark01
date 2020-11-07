@@ -3,6 +3,10 @@
 
     <string name="hello_blank_fragment">Home blank fragment</string>
 
+    <string name="title_now_playing">Now Playing</string>
+    <string name="title_popular">Popular</string>
+    <string name="title_upcoming">Upcoming</string>
+
     <string name="image_movie">Movie Poster</string>
 
     <string name="text_movie_rating">Rating: %s / 10</string>

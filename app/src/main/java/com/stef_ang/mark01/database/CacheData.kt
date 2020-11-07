@@ -1,12 +1,17 @@
 package com.stef_ang.mark01.database
 
 import androidx.annotation.StringDef
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "cache_data", primaryKeys = ["id", "type"])
+@Entity(tableName = "cache_data")
 data class CacheData(
     val id: Int,
+    @PrimaryKey
+    val key: String,
     @DataType val type: String,
+    @ColumnInfo(name = "custom_order") val order: Int,
     val serializedObject: String
 ) {
 

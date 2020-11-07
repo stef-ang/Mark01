@@ -16,7 +16,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.stef_ang.mark01.Mark01Application
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
-import com.stef_ang.mark01.viewitem.HomeMovieVI
+import com.stef_ang.mark01.domain.HomeMovie
+import com.stef_ang.mark01.viewitem.HomeMovieSectionVI
+import com.stef_ang.mark01.viewmodel.home.HomeLoadingVM
 import com.stef_ang.mark01.viewmodel.home.HomeNowPlayingVM
 import com.stef_ang.mark01.viewmodel.home.HomePopularVM
 import com.stef_ang.mark01.viewmodel.home.HomeUpcomingVM
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     private val nowPlayingVM by viewModels<HomeNowPlayingVM> { viewModelFactory }
     private val popularVM by viewModels<HomePopularVM> { viewModelFactory }
     private val upcomingVM by viewModels<HomeUpcomingVM> { viewModelFactory }
+    private val loadingVM by viewModels<HomeLoadingVM>()
 
     private val itemAdapter = ItemAdapter<GenericItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
@@ -48,44 +51,88 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        initRecyclerView()
+        initView()
         observeLiveData()
 
-        popularVM
-        upcomingVM
         return _binding?.root
     }
 
-    private fun initRecyclerView() {
+    private fun initView() {
         binding.recyclerView.apply {
             adapter = fastAdapter
         }
+        binding.imageStatus.setImageResource(R.drawable.loading_animation)
     }
 
     private fun observeLiveData() {
+        loadingVM.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.imageStatus.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
         nowPlayingVM.state.observe(viewLifecycleOwner, Observer {
             when (it.state) {
-                is HomeViewState.State.Loading -> {
-                    binding.imageStatus.apply {
-                        visibility = View.VISIBLE
-                        setImageResource(R.drawable.loading_animation)
-                    }
-                }
+                is HomeViewState.State.Loading -> loadingVM.setData1(true)
                 is HomeViewState.State.Success -> {
-                    itemAdapter.setNewList(it.movies?.map { movie -> HomeMovieVI(movie).also {
-                        it.identifier = movie.id.toLong()
-                    } } ?: emptyList())
-                    binding.imageStatus.visibility = View.GONE
+                    mainRender()
+                    loadingVM.setData1(false)
                 }
                 is HomeViewState.State.Error -> {
-                    itemAdapter.setNewList(it.movies?.map { movie -> HomeMovieVI(movie).also {
-                        it.identifier = movie.id.toLong()
-                    } } ?: emptyList())
-                    binding.imageStatus.visibility = View.GONE
+                    mainRender()
+                    loadingVM.setData1(false)
                     Toast.makeText(context, (it.state as HomeViewState.State.Error).error, Toast.LENGTH_SHORT).show()
                 }
             }
         })
+
+        popularVM.state.observe(viewLifecycleOwner, Observer {
+            when (it.state) {
+                is HomeViewState.State.Loading -> loadingVM.setData2(true)
+                is HomeViewState.State.Success -> {
+                    mainRender()
+                    loadingVM.setData2(false)
+                }
+                is HomeViewState.State.Error -> {
+                    mainRender()
+                    loadingVM.setData2(false)
+                    Toast.makeText(context, (it.state as HomeViewState.State.Error).error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        upcomingVM.state.observe(viewLifecycleOwner, Observer {
+            when (it.state) {
+                is HomeViewState.State.Loading -> loadingVM.setData3(true)
+                is HomeViewState.State.Success -> {
+                    mainRender()
+                    loadingVM.setData3(false)
+                }
+                is HomeViewState.State.Error -> {
+                    mainRender()
+                    loadingVM.setData3(false)
+                    Toast.makeText(context, (it.state as HomeViewState.State.Error).error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun mainRender() {
+        val items = mutableListOf<GenericItem>()
+        nowPlayingVM.state.value?.movies?.let {
+            items.add(renderHomeSection(getString(R.string.title_now_playing), it))
+        }
+        popularVM.state.value?.movies?.let {
+            items.add(renderHomeSection(getString(R.string.title_popular), it))
+        }
+        upcomingVM.state.value?.movies?.let {
+            items.add(renderHomeSection(getString(R.string.title_upcoming), it))
+        }
+        itemAdapter.setNewList(items)
+    }
+
+    private fun renderHomeSection(title: String, movies: List<HomeMovie>): HomeMovieSectionVI {
+        return HomeMovieSectionVI(title, movies).also {
+            it.identifier = title.hashCode().toLong()
+        }
     }
 
     override fun onDestroyView() {

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.stef_ang.mark01.domain.HomeMovieDomain
 import com.stef_ang.mark01.domain.IFirstPageMoviesUC
 import com.stef_ang.mark01.util.HomeMoviesType
+import com.stef_ang.mark01.util.asHomeViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,23 +41,7 @@ class HomePopularVM @Inject constructor(val useCase: IFirstPageMoviesUC) : ViewM
     @VisibleForTesting
     fun updateState(state: HomeMovieDomain) {
         viewModelScope.launch {
-            when (state) {
-                is HomeMovieDomain.Loading -> _state.value =
-                    HomeViewState(
-                        null,
-                        HomeViewState.State.Loading
-                    )
-                is HomeMovieDomain.Success -> _state.value =
-                    HomeViewState(
-                        state.movies,
-                        HomeViewState.State.Success
-                    )
-                is HomeMovieDomain.Error -> _state.value =
-                    HomeViewState(
-                        _state.value?.movies,
-                        HomeViewState.State.Error(state.error)
-                    )
-            }
+            _state.value = state.asHomeViewState(_state)
         }
     }
 }
