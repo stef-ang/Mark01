@@ -25,10 +25,6 @@ class HomeMovieSectionVI(
     override fun bindView(binding: ItemHomeMovieSectionBinding, payloads: List<Any>) {
         binding.textTitle.text = title
         binding.buttonAll.text = "See All"
-    }
-
-    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemHomeMovieSectionBinding {
-        fastAdapter = FastAdapter.with(itemAdapter)
         itemAdapter.setNewList(
             movies.map { movie ->
                 HomeMovieSmallVI(movie).also {
@@ -36,6 +32,10 @@ class HomeMovieSectionVI(
                 }
             }
         )
+    }
+
+    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemHomeMovieSectionBinding {
+        fastAdapter = FastAdapter.with(itemAdapter)
         val binding = ItemHomeMovieSectionBinding.inflate(inflater, parent, false)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(parent?.context, RecyclerView.HORIZONTAL, false)
