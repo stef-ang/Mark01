@@ -2,9 +2,9 @@ package com.stef_ang.mark01.di.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.stef_ang.mark01.viewmodel.HomeNowPlayingVM
-import com.stef_ang.mark01.viewmodel.HomePopularVM
-import com.stef_ang.mark01.viewmodel.HomeUpcomingVM
+import com.stef_ang.mark01.viewmodel.home.HomeNowPlayingVM
+import com.stef_ang.mark01.viewmodel.home.HomePopularVM
+import com.stef_ang.mark01.viewmodel.home.HomeUpcomingVM
 import com.stef_ang.mark01.viewmodel.ViewModelFactory
 import com.stef_ang.mark01.viewmodel.ViewModelKey
 import dagger.Binds

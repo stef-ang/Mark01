@@ -17,10 +17,10 @@ import com.stef_ang.mark01.Mark01Application
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
 import com.stef_ang.mark01.viewitem.HomeMovieVI
-import com.stef_ang.mark01.viewmodel.HomeNowPlayingVM
-import com.stef_ang.mark01.viewmodel.HomePopularVM
-import com.stef_ang.mark01.viewmodel.HomeUpcomingVM
-import com.stef_ang.mark01.viewmodel.HomeViewState
+import com.stef_ang.mark01.viewmodel.home.HomeNowPlayingVM
+import com.stef_ang.mark01.viewmodel.home.HomePopularVM
+import com.stef_ang.mark01.viewmodel.home.HomeUpcomingVM
+import com.stef_ang.mark01.viewmodel.home.HomeViewState
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {

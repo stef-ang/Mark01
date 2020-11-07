@@ -1,29 +1,27 @@
-package com.stef_ang.mark01.repository.firstpage
+package com.stef_ang.mark01.repository
 
 import com.stef_ang.mark01.api.MovieService
 import com.stef_ang.mark01.api.asCacheData
 import com.stef_ang.mark01.database.CacheDB
 import com.stef_ang.mark01.database.CacheData
-import com.stef_ang.mark01.repository.ResponseStatus
+import com.stef_ang.mark01.util.HomeMoviesType
 import javax.inject.Inject
 
-class FirstPagePopularRepository @Inject constructor(
+class FirstPageMovieRepository @Inject constructor(
     private val cacheDB: CacheDB,
     private val remoteService: MovieService
-): FirstPageMovieRepository {
+): IFirstPageMovieRepository {
 
-    override val types: String = CacheData.TYPE_HOME_POPULAR
-
-    override fun getMovies(): List<CacheData> {
-        return cacheDB.cacheDao.getHomeSectionMovies(types)
+    override fun getMovies(type: HomeMoviesType): List<CacheData> {
+        return cacheDB.cacheDao.getHomeSectionMovies(type.cacheType)
     }
 
-    override suspend fun refreshMovieSection(): ResponseStatus {
+    override suspend fun refreshMovieSection(type: HomeMoviesType): ResponseStatus {
         return try {
-            val result = remoteService.getPopularAsync(1)
+            val result = remoteService.getMoviesAsync(type.pathType, 1)
             if (result.isSuccessful) {
                 val nowPlaying = result.body()?.results ?: emptyList()
-                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData(types))
+                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData(type.cacheType))
             }
             ResponseStatus.Success
         } catch (e: Exception) {

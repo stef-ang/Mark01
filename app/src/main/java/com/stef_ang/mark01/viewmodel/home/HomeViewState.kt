@@ -1,4 +1,4 @@
-package com.stef_ang.mark01.viewmodel
+package com.stef_ang.mark01.viewmodel.home
 
 import com.stef_ang.mark01.domain.HomeMovie
 
