@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mikepenz.fastadapter.FastAdapter
@@ -16,7 +17,9 @@ import com.stef_ang.mark01.Mark01Application
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
 import com.stef_ang.mark01.viewitem.HomeMovieVI
-import com.stef_ang.mark01.viewmodel.HomeViewModel
+import com.stef_ang.mark01.viewmodel.HomeNowPlayingVM
+import com.stef_ang.mark01.viewmodel.HomePopularVM
+import com.stef_ang.mark01.viewmodel.HomeUpcomingVM
 import com.stef_ang.mark01.viewmodel.HomeViewState
 import javax.inject.Inject
 
@@ -26,9 +29,9 @@ class HomeFragment : Fragment() {
     private val binding get() = requireNotNull(_binding)
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-    }
+    private val nowPlayingVM by viewModels<HomeNowPlayingVM> { viewModelFactory }
+    private val popularVM by viewModels<HomePopularVM> { viewModelFactory }
+    private val upcomingVM by viewModels<HomeUpcomingVM> { viewModelFactory }
 
     private val itemAdapter = ItemAdapter<GenericItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
@@ -48,6 +51,8 @@ class HomeFragment : Fragment() {
         initRecyclerView()
         observeLiveData()
 
+        popularVM
+        upcomingVM
         return _binding?.root
     }
 
@@ -58,7 +63,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.state.observe(viewLifecycleOwner, Observer {
+        nowPlayingVM.state.observe(viewLifecycleOwner, Observer {
             when (it.state) {
                 is HomeViewState.State.Loading -> {
                     binding.imageStatus.apply {

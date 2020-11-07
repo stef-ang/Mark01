@@ -9,7 +9,7 @@ import androidx.room.Query
 interface CacheDao {
 
     @Query("SELECT * FROM cache_data WHERE type = :type")
-    fun getMovies(type: String = CacheData.TYPE_MOVIE): List<CacheData>
+    fun getHomeSectionMovies(@CacheData.Companion.DataType type: String): List<CacheData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllCache(vararg cacheData: CacheData)

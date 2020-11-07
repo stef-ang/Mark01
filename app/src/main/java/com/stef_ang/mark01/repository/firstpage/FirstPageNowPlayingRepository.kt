@@ -1,31 +1,32 @@
-package com.stef_ang.mark01.repository
+package com.stef_ang.mark01.repository.firstpage
 
 import com.stef_ang.mark01.api.MovieService
 import com.stef_ang.mark01.api.asCacheData
 import com.stef_ang.mark01.database.CacheDB
 import com.stef_ang.mark01.database.CacheData
+import com.stef_ang.mark01.repository.ResponseStatus
+import javax.inject.Inject
 
-// repository responsible to wrap data service (DB and remote)
-// no LiveData or other android stuff
-class MovieRepository(
+class FirstPageNowPlayingRepository @Inject constructor(
     private val cacheDB: CacheDB,
     private val remoteService: MovieService
-) {
+): FirstPageMovieRepository {
 
-    fun getMovies(): List<CacheData> {
-        return cacheDB.cacheDao.getMovies()
+    override val types: String = CacheData.TYPE_HOME_NOW_PLAYING
+
+    override fun getMovies(): List<CacheData> {
+        return cacheDB.cacheDao.getHomeSectionMovies(types)
     }
 
-    suspend fun refreshMovieNowPlaying(): ResponseStatus {
+    override suspend fun refreshMovieSection(): ResponseStatus {
         return try {
             val result = remoteService.getNowPlayingAsync(1)
             if (result.isSuccessful) {
                 val nowPlaying = result.body()?.results ?: emptyList()
-                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData())
+                cacheDB.cacheDao.insertAllCache(*nowPlaying.asCacheData(types))
             }
             ResponseStatus.Success
         } catch (e: Exception) {
-            // nah untuk default error gini, krn ini repo, jauh di presentation layer, gbs pakai res String donk?
             ResponseStatus.Error(e.message ?: "Network Error")
         }
     }

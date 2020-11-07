@@ -1,4 +1,4 @@
-package com.stef_ang.mark01.di
+package com.stef_ang.mark01.di.home
 
 import com.stef_ang.mark01.fragment.HomeFragment
 import dagger.Subcomponent

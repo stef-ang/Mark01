@@ -5,14 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stef_ang.mark01.di.HomeUpcoming
 import com.stef_ang.mark01.domain.HomeMovieDomain
-import com.stef_ang.mark01.domain.HomeMovieUseCase
+import com.stef_ang.mark01.domain.IFirstPageMoviesUC
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val useCase: HomeMovieUseCase) : ViewModel() {
+class HomeUpcomingVM @Inject constructor(
+    @HomeUpcoming val useCase: IFirstPageMoviesUC
+) : ViewModel() {
 
     private val _state = MutableLiveData<HomeViewState>()
     val state: LiveData<HomeViewState> get() =  _state
