@@ -78,6 +78,7 @@ dependencies {
     // fast adapter
     implementation "com.mikepenz:fastadapter:$versions.fastadapter"
     implementation "com.mikepenz:fastadapter-extensions-binding:$versions.fastadapter"
+    implementation "com.mikepenz:fastadapter-extensions-diff:$versions.fastadapter"
 
     // flipper
     debugImplementation 'com.facebook.flipper:flipper:0.63.0'

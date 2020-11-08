@@ -17,30 +17,32 @@ class HomeMovieSectionVI(
 ) : AbstractBindingItem<ItemHomeMovieSectionBinding>() {
 
     private val itemAdapter = ItemAdapter<HomeMovieSmallVI>()
-    lateinit var fastAdapter: FastAdapter<HomeMovieSmallVI>
+    private val fastAdapter by lazy {
+        FastAdapter.with(itemAdapter).apply {
+            setHasStableIds(true)
+        }
+    }
+
+    init {
+        identifier = title.hashCode().toLong()
+    }
 
     override val type: Int
         get() = R.id.item_home_movie_section
 
     override fun bindView(binding: ItemHomeMovieSectionBinding, payloads: List<Any>) {
-        binding.textTitle.text = title
-        binding.buttonAll.text = "See All"
-        itemAdapter.setNewList(
-            movies.map { movie ->
-                HomeMovieSmallVI(movie).also {
-                    it.identifier = movie.id.toLong()
-                }
+        with(binding) {
+            textTitle.text = title
+            buttonAll.text = "See All"
+            recyclerView.apply {
+                adapter = fastAdapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             }
-        )
+        }
+        itemAdapter.setNewList(movies.map { movie -> HomeMovieSmallVI(movie) })
     }
 
     override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ItemHomeMovieSectionBinding {
-        fastAdapter = FastAdapter.with(itemAdapter)
-        val binding = ItemHomeMovieSectionBinding.inflate(inflater, parent, false)
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(parent?.context, RecyclerView.HORIZONTAL, false)
-            adapter = fastAdapter
-        }
-        return binding
+        return ItemHomeMovieSectionBinding.inflate(inflater, parent, false)
     }
 }

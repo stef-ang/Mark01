@@ -10,6 +10,10 @@ import com.stef_ang.mark01.util.ImageUtils
 
 class HomeMovieSmallVI(val data: HomeMovie) : AbstractBindingItem<ItemMovieSmallBinding>() {
 
+    init {
+        identifier = data.id.toLong()
+    }
+
     override val type: Int
         get() = R.id.item_home_movie_small
 

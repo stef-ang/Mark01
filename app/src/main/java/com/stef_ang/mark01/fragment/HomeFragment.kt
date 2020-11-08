@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.stef_ang.mark01.Mark01Application
 import com.stef_ang.mark01.R
 import com.stef_ang.mark01.databinding.FragmentHomeBinding
@@ -126,13 +127,12 @@ class HomeFragment : Fragment() {
         upcomingVM.state.value?.movies?.let {
             items.add(renderHomeSection(getString(R.string.title_upcoming), it))
         }
-        itemAdapter.setNewList(items)
+        // prevent blink on render
+        FastAdapterDiffUtil[itemAdapter] = items
     }
 
     private fun renderHomeSection(title: String, movies: List<HomeMovie>): HomeMovieSectionVI {
-        return HomeMovieSectionVI(title, movies).also {
-            it.identifier = title.hashCode().toLong()
-        }
+        return HomeMovieSectionVI(title, movies)
     }
 
     override fun onDestroyView() {
