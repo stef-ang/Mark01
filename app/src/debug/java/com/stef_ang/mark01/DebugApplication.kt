@@ -23,7 +23,7 @@ class DebugApplication: Mark01Application() {
             val client = AndroidFlipperClient.getInstance(this).apply {
                 addPlugin(InspectorFlipperPlugin(this@DebugApplication, DescriptorMapping.withDefaults()))
                 addPlugin(Api.networkFlipperPlugin)
-                addPlugin( DatabasesFlipperPlugin(this@DebugApplication))
+                addPlugin(DatabasesFlipperPlugin(this@DebugApplication))
             }
             client.start()
         }

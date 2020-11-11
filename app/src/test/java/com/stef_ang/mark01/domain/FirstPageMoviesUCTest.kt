@@ -2,7 +2,7 @@ package com.stef_ang.mark01.domain
 
 import com.slmyldz.random.Randoms
 import com.stef_ang.mark01.database.CacheData
-import com.stef_ang.mark01.getCacheData
+import com.stef_ang.mark01.getMovieCacheData
 import com.stef_ang.mark01.repository.IFirstPageMovieRepository
 import com.stef_ang.mark01.repository.ResponseStatus
 import com.stef_ang.mark01.util.HomeMoviesType
@@ -15,7 +15,7 @@ class FirstPageMoviesUCTest {
     private lateinit var useCase: FirstPageMoviesUC
 
     private val listCacheData by lazy {
-        arrayListOf(getCacheData(), getCacheData(), getCacheData(), getCacheData())
+        arrayListOf(getMovieCacheData(), getMovieCacheData(), getMovieCacheData(), getMovieCacheData())
     }
 
     @Test
