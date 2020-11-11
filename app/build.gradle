@@ -90,6 +90,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$versions.room"
 
     testImplementation "junit:junit:$versions.junit"
+    testImplementation "com.github.slmyldz:AndroidRandom:$versions.android_random"
+    testImplementation "io.mockk:mockk:$versions.io_mockk"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlin_coroutine"
 
     androidTestImplementation "androidx.test.ext:junit:$versions.test_junit"
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
